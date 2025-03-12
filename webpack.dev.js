@@ -1,32 +1,33 @@
-const webpack = require('webpack');
-const path = require('path');
-const CopyWebpackPlugin = require('copy-webpack-plugin');
-const OpenBrowserPlugin = require('open-browser-webpack-plugin');
-const HtmlWebpackPlugin = require('html-webpack-plugin');
-const MiniCssExtractPlugin = require('mini-css-extract-plugin');
-const templateParameters = require('./src/template-parameters.js');
+import webpack from 'webpack';
+import path from 'path';
+import CopyWebpackPlugin from 'copy-webpack-plugin';
+import HtmlWebpackPlugin from 'html-webpack-plugin';
+import MiniCssExtractPlugin from 'mini-css-extract-plugin';
+import ESLintPlugin from 'eslint-webpack-plugin';
 
-module.exports = {
+export default {
   devtool: 'source-map',
   mode: 'development',
   entry: [
     './src/js/index.js',
-    './src/index.css',
+    './src/css/index.css',
   ],
   output: {
-    path: path.resolve(__dirname, 'public'),
+    path: path.resolve('public'),
     filename: 'js/bundle.js',
   },
   optimization: {
-    noEmitOnErrors: true,
-    namedModules: true,
+    emitOnErrors: true,
+    moduleIds: 'named',
   },
   module: {
     rules: [
       {
         test: /\.js$/,
         exclude: /node_modules/,
-        use: ['babel-loader', 'eslint-loader'],
+        use: {
+          loader: 'babel-loader',
+        },
       },
       {
         test: /\.css$/,
@@ -44,18 +45,6 @@ module.exports = {
         ],
       },
       {
-        test: /\.(woff(2)?|ttf|eot)(\?v=\d+\.\d+\.\d+)?$/,
-        use: [
-          {
-            loader: 'file-loader',
-            options: {
-              name: '[name].[ext]',
-              outputPath: 'fonts/',
-            },
-          },
-        ],
-      },
-      {
         test: /\.(gif|png|jpe?g|svg)$/i,
         use: {
           loader: 'file-loader',
@@ -68,46 +57,39 @@ module.exports = {
     ],
   },
   devServer: {
-    contentBase: './public',
-    watchContentBase: true,
-    inline: true,
-    historyApiFallback: true,
-    host: '0.0.0.0',
-    port: 3000,
-    disableHostCheck: true,
-    stats: {
-      colors: true,
-      modules: false,
-      chunks: false,
-      chunkGroups: false,
-      chunkModules: false,
-      env: true,
+    static: {
+      directory: path.join('public'),
     },
+    compress: true,
+    port: 9000,
+  },
+  stats: {
+    errorDetails: true,
   },
   plugins: [
+    new ESLintPlugin({
+      files: 'src/js/*',
+    }),
     new webpack.LoaderOptionsPlugin({ options: {} }),
     new MiniCssExtractPlugin({
-      filename: 'css/style.css',
+      filename: 'src/css/index.css',
     }),
-    new OpenBrowserPlugin({ url: 'http://localhost:3000' }),
-    new CopyWebpackPlugin([
-      {
-        from: path.resolve(__dirname, 'src/fonts'),
-        to: path.resolve(__dirname, 'public/fonts'),
-      },
-      {
-        from: path.resolve(__dirname, 'src/img'),
-        to: path.resolve(__dirname, 'public/img'),
-      },
-      {
-        from: path.resolve(__dirname, 'src/favicon.ico'),
-        to: path.resolve(__dirname, 'public/'),
-      },
-    ]),
+    new CopyWebpackPlugin({
+      patterns: [
+        {
+          from: path.resolve('src/img'),
+          to: path.resolve('public/img'),
+        },
+        {
+          from: path.resolve('src/favicon.ico'),
+          to: path.resolve('public/'),
+        },
+      ],
+    }),
     new HtmlWebpackPlugin({
       inject: true,
-      template: path.resolve(__dirname, 'src/index.html'),
-      filename: path.resolve(__dirname, 'public/index.html'),
+      template: path.resolve('src/index.html'),
+      filename: path.resolve('public/index.html'),
     }),
   ],
 };

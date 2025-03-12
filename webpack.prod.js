@@ -1,58 +1,44 @@
-const path = require('path');
-const CopyWebpackPlugin = require('copy-webpack-plugin');
-const ImageminPlugin = require('imagemin-webpack-plugin').default;
-const HtmlWebpackPlugin = require('html-webpack-plugin');
-const MiniCssExtractPlugin = require('mini-css-extract-plugin');
-const templateParameters = require('./src/template-parameters.js');
+import path from 'path';
+import CopyWebpackPlugin from 'copy-webpack-plugin';
+import HtmlWebpackPlugin from 'html-webpack-plugin';
+import MiniCssExtractPlugin from 'mini-css-extract-plugin';
+import imagemin from 'imagemin';
+import imageminPngquant from 'imagemin-pngquant';
 
-module.exports = {
+export default {
   mode: 'production',
   entry: [
     './src/js/index.js',
-    './src/css/style.css',
+    './src/css/index.css',
   ],
   output: {
-    path: path.resolve(__dirname, 'public'),
+    path: path.resolve('public'),
     filename: 'js/bundle.js',
   },
-  stats: {
-    colors: true,
-    modules: false,
-    chunks: false,
-    chunkGroups: false,
-    chunkModules: false,
-    env: true,
+  optimization: {
+    emitOnErrors: true,
+    moduleIds: 'named',
   },
   module: {
     rules: [
       {
         test: /\.js$/,
         exclude: /node_modules/,
-        use: ['babel-loader'],
+        use: {
+          loader: 'babel-loader',
+        },
       },
       {
         test: /\.css$/,
         use: [
           {
             loader: MiniCssExtractPlugin.loader,
-            options: {},
           },
           {
             loader: 'css-loader',
             options: {
+              sourceMap: true,
               importLoaders: 1,
-            },
-          },
-        ],
-      },
-      {
-        test: /\.(woff(2)?|ttf|eot)(\?v=\d+\.\d+\.\d+)?$/,
-        use: [
-          {
-            loader: 'file-loader',
-            options: {
-              name: '[name].[ext]',
-              outputPath: 'fonts/',
             },
           },
         ],
@@ -69,29 +55,29 @@ module.exports = {
       },
     ],
   },
+  stats: {
+    errorDetails: true,
+  },
   plugins: [
-    new ImageminPlugin({ test: /\.(jpe?g|png|gif|svg)$/i }),
     new MiniCssExtractPlugin({
-      filename: 'css/style.css',
+      filename: 'src/css/index.css',
     }),
-    new CopyWebpackPlugin([
-      {
-        from: path.resolve(__dirname, 'src/fonts'),
-        to: path.resolve(__dirname, 'public/fonts'),
-      },
-      {
-        from: path.resolve(__dirname, 'src/img'),
-        to: path.resolve(__dirname, 'public/img'),
-      },
-      {
-        from: path.resolve(__dirname, 'src/favicon.ico'),
-        to: path.resolve(__dirname, 'public/'),
-      },
-    ]),
+    new CopyWebpackPlugin({
+      patterns: [
+        {
+          from: path.resolve('src/img'),
+          to: path.resolve('public/img'),
+        },
+        {
+          from: path.resolve('src/favicon.ico'),
+          to: path.resolve('public/'),
+        },
+    ]
+    }),
     new HtmlWebpackPlugin({
-      inject: true,
-      template: path.resolve(__dirname, 'src/index.html'),
-      filename: path.resolve(__dirname, 'public/index.html'),
+        inject: true,
+        template: path.resolve('src/index.html'),
+        filename: path.resolve('public/index.html'),
     }),
   ],
 };
