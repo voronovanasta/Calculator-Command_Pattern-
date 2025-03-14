@@ -36,9 +36,17 @@ export class CalcModel {
     }
 
     calculateOperation (operator) {
-            if(operator === '=') {
+        if(typeof this.currentValue === 'string') {
+            let isLastElWithPoint = this.currentValue.lastIndexOf('.') === (this.currentValue.length -1);
+            if(isLastElWithPoint) {
+                this.currentValue = parseInt(this.currentValue);
+                this.resultRow[this.resultRow.length - 1] = this.currentValue;
+            }
+        }
+
+        if(operator === '=') {
                 this.equal();
-            } else {
+        } else {
                 this.implementOperator(operator);
         }
         this.view.updateCurrentValue(this.currentValue);
