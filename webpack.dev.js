@@ -1,6 +1,5 @@
 import webpack from 'webpack';
 import path from 'path';
-import CopyWebpackPlugin from 'copy-webpack-plugin';
 import HtmlWebpackPlugin from 'html-webpack-plugin';
 import MiniCssExtractPlugin from 'mini-css-extract-plugin';
 import ESLintPlugin from 'eslint-webpack-plugin';
@@ -73,18 +72,6 @@ export default {
     new webpack.LoaderOptionsPlugin({ options: {} }),
     new MiniCssExtractPlugin({
       filename: 'src/css/index.css',
-    }),
-    new CopyWebpackPlugin({
-      patterns: [
-        {
-          from: path.resolve('src/img'),
-          to: path.resolve('public/img'),
-        },
-        {
-          from: path.resolve('src/favicon.ico'),
-          to: path.resolve('public/'),
-        },
-      ],
     }),
     new HtmlWebpackPlugin({
       inject: true,

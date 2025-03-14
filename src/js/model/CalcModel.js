@@ -55,7 +55,7 @@ updateDisplaySize () {
 }
 
     updateCurrentValue (value) {
-        if(Number.isInteger(+this.currentValue) && this.isFloatNumber) {
+        if(Number.isInteger(+this.currentValue) && this.isFloatNumber ) {
             this.currentValue += '.';
             
         } else if (this.currentValue !== 0){
@@ -165,8 +165,11 @@ updateDisplaySize () {
     }
 
     setFloatNumber() {
-        this.isFloatNumber = true;
-        this.updateCurrentValue(this.currentValue);
+        let isPointPresence = String(this.currentValue).indexOf('.') === -1;
+        if (isPointPresence) {
+            this.isFloatNumber = true;
+            this.updateCurrentValue(this.currentValue);
+        }
     }
 
     clear() {
