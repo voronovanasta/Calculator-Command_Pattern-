@@ -1,3 +1,127 @@
 body {
-    background-color: aquamarine;
+    background-color: rgb(110, 133, 132);
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
+
+#calculator {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+}
+  
+  .display {
+    background-color: #808080;
+    display: block;
+    margin: 12px auto;
+    width: 230px;
+    outline:none;
+    overflow: hidden;
+    resize: none;
+    border: none;
+    padding: 0 15px;
+    text-align: right;
+    caret-color:#808080;
+    cursor: unset;
+  }
+
+  #input {
+    height: 25px;
+    margin-bottom: 0;
+    font-size: 25px;
+  }
+
+  #output {
+    height: 60px;
+    font-size: 50px;
+  }
+
+  input:focus
+{
+  outline: none;
+}
+  
+  .keyboard-wrapper {
+    display: block;
+    margin: 30% auto 0;
+    max-width: 270px;
+    padding: 3px;
+    background: grey;
+    user-select: none;
+    border-radius: 5px;
+    box-shadow: 0px 6px 11px 7px rgba(0, 0, 0, .6);
+  
+  }
+  
+  .keyboard-keys {
+    text-align: center;
+  }
+  
+  .keyboard-key {
+    width: 20%;
+    height: 50px;
+    max-width: 100px;
+    border: none;
+    border-radius: 3px;
+    color: #ffffff;
+    background: #444444;
+    cursor: pointer;
+    margin: 3px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    vertical-align: top;
+    transition: 0.1s all linear;
+  }
+  .keyboard-key:hover {
+    background:#d4e1c0;
+  }
+  
+  .keyboard-key:active {
+    background: greenyellow;
+  }
+
+  .zero-key {
+    width: 42%;
+    max-width: none;
+  }
+  
+  .text {
+    margin: 10px auto;
+    text-align: center;
+  }
+  #theme {
+    margin-top: 30px;
+   }
+  
+   .theme-mode span {
+   color: black;
+    
+   }
+  
+  .light button{
+    color: antiquewhite;
+    background-color: rgb(41, 69, 168);
+  
+  }
+  
+  .light body{
+    background-color: beige;
+  }
+
+  .light .keyboard-wrapper{
+    background-color: antiquewhite;
+  }
+
+  .light .display {
+    background-color: antiquewhite;
+  }
+
+  .light .keyboard-key:hover {
+    background:#9d9e9c;
+  }
+  
+  .light .keyboard-key:active {
+    background: rgb(220, 255, 47);
+  }
