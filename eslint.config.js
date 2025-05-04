@@ -5,10 +5,13 @@ import prettier from 'eslint-plugin-prettier';
 export default [
   { ignores: ['public'] },
   {
-    files: ['**/*.{js,jsx}'],
+    files: ['**/*.{js,jsx}', 'test/**/*'],
     languageOptions: {
       ecmaVersion: 2020,
-      globals: globals.browser,
+      globals: {
+        ...globals.browser,
+        ...globals.jest,
+      },
       parserOptions: {
         ecmaVersion: 'latest',
         ecmaFeatures: { jsx: true },
